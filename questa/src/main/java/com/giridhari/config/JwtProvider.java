@@ -1,18 +1,15 @@
 package com.giridhari.config;
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
+
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.Authentication;
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.util.Date;
 
 public class JwtProvider {
 
-    static SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+    static SecretKey key = Jwts.SIG.HS256.key().build();
 
     private JwtProvider(){
         throw new AssertionError("Utility class that has everything static should not be instantiated.");
@@ -32,14 +29,12 @@ public static String generateToken(Authentication auth){
 
 public static String getEmailFromToken(String jwt){
 
-        Jws<Claims> jws = Jwts.parser()
-            .verifyWith(key)
-            .build()
-            .parseSignedClaims(jwt);
-
-    Claims claims = jws.getPayload();
-
-    return String.valueOf(claims.get("email"));
+       return Jwts.parser()
+               .verifyWith(key)
+               .build()
+               .parseSignedClaims(jwt)
+               .getPayload()
+               .get("email",String.class);
 }
 
 }
