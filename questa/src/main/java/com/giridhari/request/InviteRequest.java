@@ -1,4 +1,4 @@
-package com.giridhari.repository;
+package com.giridhari.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
