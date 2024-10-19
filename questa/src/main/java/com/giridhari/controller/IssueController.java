@@ -4,7 +4,7 @@ import com.giridhari.modal.Issue;
 import com.giridhari.modal.IssueDTO;
 import com.giridhari.modal.User;
 import com.giridhari.request.IssueRequest;
-import com.giridhari.response.AuthResponse;
+
 import com.giridhari.response.MessageResponse;
 import com.giridhari.service.IssueService;
 import com.giridhari.service.UserService;
