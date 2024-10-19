@@ -4,7 +4,7 @@ import com.giridhari.modal.Chat;
 import com.giridhari.modal.Invitation;
 import com.giridhari.modal.Project;
 import com.giridhari.modal.User;
-import com.giridhari.repository.InviteRequest;
+import com.giridhari.request.InviteRequest;
 import com.giridhari.response.MessageResponse;
 import com.giridhari.service.InvitationService;
 import com.giridhari.service.ProjectService;
