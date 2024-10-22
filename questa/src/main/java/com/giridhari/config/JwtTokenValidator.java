@@ -3,11 +3,13 @@ package com.giridhari.config;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -16,24 +18,27 @@ import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.crypto.SecretKey;
+
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
+
 import java.util.List;
 
 public class JwtTokenValidator extends OncePerRequestFilter {
 
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenValidator.class);
+
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
 
-        String jwt = request.getHeader(JwtConstant.JWT_HEADER);
+        String jwt = request.getHeader("Authorization");  // Or your JwtConstant.JWT_HEADER
 
-        if(jwt!= null && jwt.startsWith("Bearer ")){
+        if (jwt != null && jwt.startsWith("Bearer ")) {
             jwt = jwt.substring(7);
-            try{
-                SecretKey key = Keys.hmacShaKeyFor(JwtConstant.SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+            try {
                 Jws<Claims> jws = Jwts.parser()
-                        .verifyWith(key)
+                        .verifyWith(JwtConstant.JWT_KEY)
                         .build()
                         .parseSignedClaims(jwt);
 
@@ -44,18 +49,17 @@ public class JwtTokenValidator extends OncePerRequestFilter {
 
                 List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
 
-                Authentication authentication = new UsernamePasswordAuthenticationToken(email,null,auths);
+                Authentication authentication = new UsernamePasswordAuthenticationToken(email, null, auths);
                 SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            }catch (Exception e){
-            throw new BadCredentialsException("Invalid token...");
+            } catch (Exception e) {
+                logger.error("JWT Token Validation Failed: {}", e.getMessage());
+                throw new BadCredentialsException("Invalid token: " + e.getMessage());
             }
         }
 
-        filterChain.doFilter(request,response);
-
+        filterChain.doFilter(request, response);
     }
-
 }
 
 

@@ -3,38 +3,42 @@ package com.giridhari.config;
 
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.core.Authentication;
-import javax.crypto.SecretKey;
+import org.springframework.security.core.GrantedAuthority;
+
 import java.time.Instant;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 public class JwtProvider {
 
-    static SecretKey key = Jwts.SIG.HS256.key().build();
-
-    private JwtProvider(){
-        throw new AssertionError("Utility class that has everything static should not be instantiated.");
+    private JwtProvider() {
+        throw new AssertionError("Utility class should not be instantiated.");
     }
 
-public static String generateToken(Authentication auth){
+    public static String generateToken(Authentication auth) {
+        final long EXPIRATION_TIME = 86400000; // 24 hours
 
-    final long EXPIRATION_TIME = 86400000;
+        return Jwts.builder()
+                .issuedAt(Date.from(Instant.now()))
+                .expiration(Date.from(Instant.now().plusMillis(EXPIRATION_TIME)))
+                .claim("email", auth.getName())
+                .claim("authorities", auth.getAuthorities().stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .collect(Collectors.joining(",")))
+                .signWith(JwtConstant.JWT_KEY)
+                .compact();
+    }
 
-    return Jwts.builder()
-            .issuedAt(Date.from(Instant.now()))
-            .expiration(Date.from(Instant.now().plusMillis(EXPIRATION_TIME)))
-            .claim("email", auth.getName())
-            .signWith(key)
-            .compact();
-}
+    public static String getEmailFromToken(String jwt) {
+        if (jwt != null && jwt.startsWith("Bearer ")) {
+            jwt = jwt.substring(7);
+        }
 
-public static String getEmailFromToken(String jwt){
-
-       return Jwts.parser()
-               .verifyWith(key)
-               .build()
-               .parseSignedClaims(jwt)
-               .getPayload()
-               .get("email",String.class);
-}
-
+        return Jwts.parser()
+                .verifyWith(JwtConstant.JWT_KEY)
+                .build()
+                .parseSignedClaims(jwt)
+                .getPayload()
+                .get("email", String.class);
+    }
 }
