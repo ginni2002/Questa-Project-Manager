@@ -54,7 +54,7 @@ public class ProjectController {
         return new ResponseEntity<>(projects, HttpStatus.OK);
     }
 
-    @PostMapping()
+    @PostMapping
     public ResponseEntity<Project> createProject(
 
             @RequestHeader("Authorization") String jwt,
