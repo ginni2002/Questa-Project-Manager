@@ -20,9 +20,7 @@ type Tags = "all" | "react" | "nextjs" | /* ... */
 // 2. Catch errors at compile time instead of runtime
 // 3. Better documentation for other developers
 // 4. Refactoring becomes easier and safer */
-
 //----------------------------------------------------------
-
 /* Event Handling in TypeScript:
 // Instead of just (e) => {...}
 // We specify the event type:
@@ -53,61 +51,3 @@ const [projects, setProjects] = useState<Project[]>([]);
 // 3. Better IDE support */
 
 //----------------------------------------------------------
-
-/* About Your Doubt on "Too Many Types"
-// GOOD: Create types for important data structures
-interface Project {
-  id: number;
-  title: string;
-  description: string;
-}
-
-// GOOD: Create types for limited sets of values (enums)
-type Category = "frontend" | "backend" | "fullstack";
-
-// NOT NECESSARY: Creating types for every string or number
-// Don't do this:
-type ProjectTitle = string;
-type ProjectId = number;
-
-// BAD: Over-typing simple things
-// Don't do this:
-type ButtonText = string;
-type InputValue = string; */
-
-//----------------------------------------------------------
-
-/* Let's also improve the ProjectCard component:
-// Define props interface for ProjectCard
-interface ProjectCardProps {
-  project: Project;
-  onClick?: (project: Project) => void; // Optional click handler
-}
-
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
-  return (
-    <div onClick={() => onClick?.(project)}>
-      <h3>{project.title}</h3>
-      <p>{project.description}</p>
-    </div>
-  );
-}; */
-
-//----------------------------------------------------------
-
-/* Remember:
-Create types for:
-
-Complex data structures (interfaces)
-Finite sets of values (union types)
-Component props
-API responses
-State that holds complex data
-
-
-Don't create types for:
-
-Simple primitive values
-Temporary variables
-Internal implementation details
-Things that don't need to be reused */

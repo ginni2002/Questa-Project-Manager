@@ -76,38 +76,3 @@ type ButtonText = string;
 type InputValue = string; */
 
 //----------------------------------------------------------
-
-/* Let's also improve the ProjectCard component:
-// Define props interface for ProjectCard
-interface ProjectCardProps {
-  project: Project;
-  onClick?: (project: Project) => void; // Optional click handler
-}
-
-const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
-  return (
-    <div onClick={() => onClick?.(project)}>
-      <h3>{project.title}</h3>
-      <p>{project.description}</p>
-    </div>
-  );
-}; */
-
-//----------------------------------------------------------
-
-/* Remember:
-Create types for:
-
-Complex data structures (interfaces)
-Finite sets of values (union types)
-Component props
-API responses
-State that holds complex data
-
-
-Don't create types for:
-
-Simple primitive values
-Temporary variables
-Internal implementation details
-Things that don't need to be reused */

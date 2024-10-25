@@ -92,22 +92,3 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
     </div>
   );
 }; */
-
-//----------------------------------------------------------
-
-/* Remember:
-Create types for:
-
-Complex data structures (interfaces)
-Finite sets of values (union types)
-Component props
-API responses
-State that holds complex data
-
-
-Don't create types for:
-
-Simple primitive values
-Temporary variables
-Internal implementation details
-Things that don't need to be reused */

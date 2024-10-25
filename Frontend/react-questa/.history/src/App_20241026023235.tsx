@@ -96,6 +96,7 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
 //----------------------------------------------------------
 
 /* Remember:
+
 Create types for:
 
 Complex data structures (interfaces)
