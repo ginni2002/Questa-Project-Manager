@@ -33,7 +33,7 @@ interface FilterChangeProps {
   value: FilterValue;
 }
 // Constants to be captialized
-const TAGS_ARR: Tags[] = [
+export const TAGS_ARR: Tags[] = [
   "all",
   "react",
   "nextjs",
