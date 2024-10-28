@@ -15,12 +15,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { PersonIcon } from "@radix-ui/react-icons";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
+import { NavigateFunction, useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate: NavigateFunction = useNavigate();
   return (
     <div className="border-b py-4 px-5 flex items-center justify-between">
       <div className="flex items-center gap-3">
-        <p className="cursor-pointer">Questa</p>
+        <p onClick={() => navigate("/")} className="cursor-pointer">
+          Questa
+        </p>
         <Dialog>
           <DialogTrigger asChild>
             <Button variant="ghost">New Project</Button>
